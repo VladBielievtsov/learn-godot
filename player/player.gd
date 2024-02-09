@@ -1,7 +1,16 @@
 extends CharacterBody2D
 
+class_name Player
+
+signal healthChanged
+
 @export var SPEED: int = 45
 @onready var animations = $AnimationPlayer
+
+@export var maxHealth = 3
+@onready var currentHealth: int = maxHealth
+
+@export var knockBackPower: int = 500
 
 func handleInput():
 	var moveDirection = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
@@ -33,4 +42,13 @@ func _physics_process(delta):
 
 func _on_hurt_box_area_entered(area):
 	if area.name == "hitBox":
-		print_debug(area.get_parent().name)
+		currentHealth -= 1
+		if currentHealth < 0:
+			currentHealth = maxHealth
+		healthChanged.emit(currentHealth)
+		knockBack(area.get_parent().velocity)
+
+func knockBack(enemyVelocity: Vector2):
+	var knockBackDirection = (enemyVelocity - velocity).normalized() * knockBackPower
+	velocity = knockBackDirection
+	move_and_slide()

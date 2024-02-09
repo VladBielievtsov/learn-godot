@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://b5xw62s6upea8"]
+[gd_scene load_steps=17 format=3 uid="uid://b5xw62s6upea8"]
 
 [ext_resource type="Script" path="res://scenes/world.gd" id="1_03rfn"]
 [ext_resource type="PackedScene" uid="uid://kx35s1b31c04" path="res://player/player.tscn" id="1_lrqcv"]
@@ -9,6 +9,7 @@
 [ext_resource type="Script" path="res://camera/followCam.gd" id="5_6q3do"]
 [ext_resource type="PackedScene" uid="uid://jxthrhbkkk17" path="res://enemies/spirit.tscn" id="6_bh6ay"]
 [ext_resource type="AudioStream" uid="uid://bvuhyjdfnhq1l" path="res://music/bg-music.mp3" id="7_av8gm"]
+[ext_resource type="PackedScene" uid="uid://llia0m4q3cxc" path="res://ui/heartsContainer.tscn" id="10_yotf3"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_fg2xs"]
 texture = ExtResource("2_hinkk")
@@ -4893,7 +4894,6 @@ script = ExtResource("1_03rfn")
 
 [node name="TileMap" type="TileMap" parent="."]
 y_sort_enabled = true
-position = Vector2(5, -13)
 tile_set = SubResource("TileSet_nfjj6")
 format = 2
 layer_0/name = "ground"
@@ -4938,6 +4938,7 @@ endPoint = NodePath("Marker2D")
 position = Vector2(46, -33)
 
 [node name="AreaHouse" type="Area2D" parent="TileMap"]
+position = Vector2(0, 1)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="TileMap/AreaHouse"]
 z_index = 2
@@ -4948,6 +4949,14 @@ shape = SubResource("CircleShape2D_h2t6y")
 stream = ExtResource("7_av8gm")
 volume_db = -20.0
 autoplay = true
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="heartsContainer" parent="CanvasLayer" instance=ExtResource("10_yotf3")]
+offset_left = 5.0
+offset_top = 5.0
+offset_right = 5.0
+offset_bottom = 5.0
 
 [connection signal="body_entered" from="TileMap/AreaHouse" to="." method="_on_area_house_body_entered"]
 [connection signal="body_entered" from="TileMap/AreaHouse" to="TileMap/AreaHouse" method="_on_body_entered"]
